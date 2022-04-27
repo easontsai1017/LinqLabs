@@ -36,13 +36,49 @@ namespace MyHomeWork
 
             System.IO.FileInfo[] files =  dir.GetFiles();
 
-            this.dataGridView1.DataSource = files;
+            var q = from n in files
+                    where n.Extension == ".log"
+                    select n;
+            this.dataGridView1.DataSource = q.ToList();
+            
 
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(@"c:\windows");
+
+            System.IO.FileInfo[] files = dir.GetFiles();
+
+            var q = from n in files
+                    where n.CreationTime.Year == 2020
+                    select n;
+            this.dataGridView1.DataSource = q.ToList();
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(@"c:\windows");
+
+            System.IO.FileInfo[] files = dir.GetFiles();
+
+            var q = from n in files
+                    where n.Length >= 1000000
+                    select n;
+            this.dataGridView1.DataSource = q.ToList();
+        }
+
 
         private void button6_Click(object sender, EventArgs e)
         {
             this.dataGridView1.DataSource = nwDataSet1.Orders;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

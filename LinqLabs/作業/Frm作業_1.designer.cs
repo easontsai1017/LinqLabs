@@ -278,6 +278,7 @@ namespace MyHomeWork
             this.button1.TabIndex = 70;
             this.button1.Text = "     某年訂單 / 訂單明細";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -289,6 +290,7 @@ namespace MyHomeWork
             this.button2.TabIndex = 72;
             this.button2.Text = "     FileInfo[]   - 2017 Created - oerder ";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button13
             // 
@@ -336,6 +338,7 @@ namespace MyHomeWork
             this.button4.TabIndex = 124;
             this.button4.Text = "     FileInfo[]   - 大檔案";
             this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // textBox1
             // 
