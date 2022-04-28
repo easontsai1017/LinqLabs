@@ -56,6 +56,8 @@ namespace MyHomeWork
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.nwDataSet1 = new LinqLabs.NWDataSet();
             this.ordersTableAdapter1 = new LinqLabs.NWDataSetTableAdapters.OrdersTableAdapter();
+            this.order_DetailsTableAdapter1 = new LinqLabs.NWDataSetTableAdapters.Order_DetailsTableAdapter();
+            this.productsTableAdapter1 = new LinqLabs.NWDataSetTableAdapters.ProductsTableAdapter();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -315,6 +317,7 @@ namespace MyHomeWork
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(176, 21);
             this.comboBox1.TabIndex = 125;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // button12
             // 
@@ -327,6 +330,7 @@ namespace MyHomeWork
             this.button12.TabIndex = 97;
             this.button12.Text = "上一頁";
             this.button12.UseVisualStyleBackColor = false;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
             // button4
             // 
@@ -387,10 +391,6 @@ namespace MyHomeWork
             this.label2.TabIndex = 135;
             this.label2.Text = "Year:";
             // 
-            // bindingSource1
-            // 
-            this.bindingSource1.CurrentChanged += new System.EventHandler(this.bindingSource1_CurrentChanged);
-            // 
             // nwDataSet1
             // 
             this.nwDataSet1.DataSetName = "NWDataSet";
@@ -399,6 +399,14 @@ namespace MyHomeWork
             // ordersTableAdapter1
             // 
             this.ordersTableAdapter1.ClearBeforeFill = true;
+            // 
+            // order_DetailsTableAdapter1
+            // 
+            this.order_DetailsTableAdapter1.ClearBeforeFill = true;
+            // 
+            // productsTableAdapter1
+            // 
+            this.productsTableAdapter1.ClearBeforeFill = true;
             // 
             // Frm作業_1
             // 
@@ -459,5 +467,7 @@ namespace MyHomeWork
         private System.Windows.Forms.BindingSource bindingSource1;
         private LinqLabs.NWDataSet nwDataSet1;
         private LinqLabs.NWDataSetTableAdapters.OrdersTableAdapter ordersTableAdapter1;
+        private LinqLabs.NWDataSetTableAdapters.Order_DetailsTableAdapter order_DetailsTableAdapter1;
+        private LinqLabs.NWDataSetTableAdapters.ProductsTableAdapter productsTableAdapter1;
     }
 }
