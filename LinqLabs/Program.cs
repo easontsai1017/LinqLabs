@@ -26,7 +26,7 @@ namespace Starter
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Frm作業_1());
+            Application.Run(new Frm作業_3());
            
         }
     }
