@@ -16,6 +16,7 @@ namespace LinqLabs.作業
         public Frm作業_3()
         {
             InitializeComponent();
+           
         }
 
          # region  int[] 分三群 -No LINQ
@@ -115,6 +116,8 @@ namespace LinqLabs.作業
                     MyGroup = g
                     };
             this.dataGridView2.DataSource = q.ToList();
+            //TreeView
+            treeView1.Nodes.Clear();
 
             foreach (var group in q)
             {
@@ -126,7 +129,194 @@ namespace LinqLabs.作業
                 }
             }
 
-            #endregion
+           
+
         }
+        #endregion
+         #region LINQ to Northwind Entity
+        NorthwindEntities dbcontext = new NorthwindEntities();
+        private void button8_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            //UnitPrice 20 50 
+            var q = dbcontext.Products.Select(p => p).ToList();
+            this.dataGridView1.DataSource = q;
+            var q1 = from p in dbcontext.Products.AsEnumerable()
+                    group p by Unitprice(p.UnitPrice) into g
+                    select new
+                    {
+                        MyKey = g.Key,
+                        MyCount = g.Count(),
+                        MyGroup = g
+                    };
+            this.dataGridView2.DataSource = q1.ToList();
+            //TreeView
+            treeView1.Nodes.Clear();
+            foreach (var group in q1)
+            {
+                string s = $"{group.MyKey}  -  ({group.MyCount})";
+                TreeNode nods = treeView1.Nodes.Add(group.MyKey.ToString(), s);
+                foreach (var item in group.MyGroup)
+                {
+                    string s1 = $"{item.ProductName} -({item.UnitPrice:c2})";
+                    nods.Nodes.Add(item.ToString(), s1);
+                }
+            }
+        }
+        private object Unitprice(decimal? unitPrice)
+        {
+            if (unitPrice < 20)
+                return "Low_Price";
+            else if (unitPrice < 50)
+                return "Medium _Price";
+            else
+                return "High_Price";
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            // Orders -  Group by 年
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            //All
+            var q = dbcontext.Orders.Select(o => o).ToList();
+            this.dataGridView1.DataSource = q;
+            //year
+            var q1= from o in dbcontext.Orders
+                    group o by o.OrderDate.Value.Year into g
+                    orderby g.Key descending
+                    select new
+                    {
+                        Year = g.Key,
+                        Count = g.Count(),
+                        MyGroup = g
+                    };
+            this.dataGridView2.DataSource = q1.ToList();
+            //TreeView
+            treeView1.Nodes.Clear();
+            foreach (var group in q1)
+            {
+                string s = $"{group.Year}  -  ({group.Count})";
+                TreeNode nods = treeView1.Nodes.Add(group.Year.ToString(), s);
+                foreach (var item in group.MyGroup)
+                {
+                   string s1 = $"{item.CustomerID}";
+                    nods.Nodes.Add(item.ToString(),s1);
+                }
+            }
+
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {// Orders -  Group by 年/月
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            //All
+            var q = dbcontext.Orders.Select(o => o).ToList();
+            this.dataGridView1.DataSource = q;
+            //year
+            var q1 = from o in dbcontext.Orders
+                     group o by new {o.OrderDate.Value.Year,o.OrderDate.Value.Month }  into g
+                     orderby g.Key descending
+                     select new
+                     {
+                         YearMonth = g.Key,
+                         Count = g.Count(),
+                         MyGroup = g
+
+                     };
+            this.dataGridView2.DataSource = q1.ToList();
+            //TreeView
+            treeView1.Nodes.Clear();
+            foreach (var group in q1)
+            {
+                string s = $"{group.YearMonth}  -  ({group.Count})";
+                TreeNode nods = treeView1.Nodes.Add(group.YearMonth.ToString(), s);
+                foreach (var item in group.MyGroup)
+                {
+                    string s1 = $"{item.CustomerID}";
+                    nods.Nodes.Add(item.ToString(), s1);
+                }
+            }
+        }
+
+        
+
+        private void button2_Click(object sender, EventArgs e)
+        {//總銷售金額
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            //By Year
+            var q = from od in dbcontext.Order_Details.AsEnumerable()
+                    group od by od.Order.OrderDate.Value.Year into g
+                    select new
+                    {
+                        Year = g.Key,
+                        總銷售金額 =$"{g.Sum(od => od.UnitPrice * od.Quantity * (decimal)(1 - od.Discount)):c2}" 
+                    };
+            this.dataGridView1.DataSource = q.ToList();
+            //All
+            var q1 = from od in dbcontext.Order_Details.AsEnumerable()
+                    group od by true into g
+                    select new
+                    {
+                      
+                        總銷售金額 = $"{g.Sum(od => od.UnitPrice * od.Quantity * (decimal)(1 - od.Discount)):c2}"
+                    };
+            this.dataGridView2.DataSource = q1.ToList();
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {//take(5) 銷售最好的top 5業務員
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            var q = (from od in dbcontext.Order_Details.AsEnumerable()
+                     group od by new { od.Order.Employee.FirstName, od.Order.Employee.LastName } into g
+                     orderby g.Sum(od => od.UnitPrice * od.Quantity * (decimal)(1 - od.Discount)) descending
+                     select new
+                     {
+                         Employee = $"{g.Key.FirstName}{g.Key.LastName}",
+                         Count = g.Count(),
+                         Total = $"{g.Sum(od => od.UnitPrice * od.Quantity * (decimal)(1 - od.Discount)):c2}"
+                     }).Take(5);
+
+            this.dataGridView1.DataSource = q.ToList();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            //NW 產品最高單價前 5 筆 (包括類別名稱)
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            var q = (from p in dbcontext.Products.AsEnumerable()
+                    orderby p.UnitPrice descending
+                    select new 
+                    {
+                    CategoryName = p.Category.CategoryName,
+                    p.ProductName,
+                    UnitPrice = $"{p.UnitPrice:c2}"
+                    }).Take(5);
+
+            this.dataGridView1.DataSource = q.ToList();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            //     NW 產品有任何一筆單價大於300 ?
+            dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
+            var q = from p in dbcontext.Products
+                    where p.UnitPrice>300
+                    select p;
+            dataGridView1.DataSource = q.ToList(); //false
+
+            bool result;
+            result = dbcontext.Products.Any(p => p.UnitPrice > 300);
+            MessageBox.Show("NW 產品有任何一筆單價大於300 : " + result);
+
+
+        }
+        #endregion
     }
 }
