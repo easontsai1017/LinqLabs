@@ -136,20 +136,21 @@ namespace LinqLabs.作業
          #region LINQ to Northwind Entity
         NorthwindEntities dbcontext = new NorthwindEntities();
         private void button8_Click(object sender, EventArgs e)
-        {
+        {//NW Products 低中高 價產品 
             dataGridView1.DataSource = null;
             dataGridView2.DataSource = null;
             //UnitPrice 20 50 
             var q = dbcontext.Products.Select(p => p).ToList();
             this.dataGridView1.DataSource = q;
             var q1 = from p in dbcontext.Products.AsEnumerable()
-                    group p by Unitprice(p.UnitPrice) into g
-                    select new
-                    {
-                        MyKey = g.Key,
-                        MyCount = g.Count(),
-                        MyGroup = g
-                    };
+                     orderby p.UnitPrice
+                     group p by Unitprice(p.UnitPrice) into g
+                     select new
+                     {
+                         MyKey = g.Key,
+                         MyCount = g.Count(),
+                         MyGroup = g
+                     };
             this.dataGridView2.DataSource = q1.ToList();
             //TreeView
             treeView1.Nodes.Clear();
@@ -237,7 +238,7 @@ namespace LinqLabs.作業
                 foreach (var item in group.MyGroup)
                 {
                     string s1 = $"{item.CustomerID}";
-                    nods.Nodes.Add(item.ToString(), s1);
+                    nods.Nodes.Add(item.ToString(),s1);
                 }
             }
         }
