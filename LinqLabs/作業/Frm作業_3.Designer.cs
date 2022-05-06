@@ -353,7 +353,7 @@ namespace LinqLabs.作業
             // 
             this.button38.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.button38.ForeColor = System.Drawing.Color.Black;
-            this.button38.Location = new System.Drawing.Point(12, 150);
+            this.button38.Location = new System.Drawing.Point(6, 150);
             this.button38.Margin = new System.Windows.Forms.Padding(5);
             this.button38.Name = "button38";
             this.button38.Size = new System.Drawing.Size(506, 42);
